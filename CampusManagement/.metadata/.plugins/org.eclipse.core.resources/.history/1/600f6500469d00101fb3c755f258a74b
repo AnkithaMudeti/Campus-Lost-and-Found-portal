@@ -1,0 +1,71 @@
+package edu.infosys.lostAndFoundApplication.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import edu.infosys.lostAndFoundApplication.bean.LostFoundItem;
+import edu.infosys.lostAndFoundApplication.dao.LostFoundItemDao;
+@RestController
+@RequestMapping("/lost-found/")
+@CrossOrigin(origins = "http://localhost:3939")
+public class LostFoundItemController {
+	@Autowired
+	  private LostFoundItemDao lostFoundItemDao;
+	  
+	  @GetMapping("/item")
+	  public List<LostFoundItem> getAllItems(){
+		  return lostFoundItemDao.findAll();
+	  }
+	  
+	  @PostMapping("/item")
+	  public void lostItemSubmission(@RequestBody LostFoundItem lostItem) {
+		  lostItem.setFoundDate(null);
+		  lostFoundItemDao.save(lostItem);
+	  }
+	  @PutMapping("/item")
+	  public void foundItemSubmission(@RequestBody LostFoundItem lostItem) {
+		   lostFoundItemDao.save(lostItem);
+	  }
+	  @GetMapping("/item/{id}")
+	  public LostFoundItem getItemById(@PathVariable Long id){
+		  return lostFoundItemDao.findById(id);
+	  }
+	  @DeleteMapping("/item/{id}")
+	  public void deleteItemById(@PathVariable Long id) {
+		  lostFoundItemDao.deleteById(id);
+	  }
+	 
+	  @GetMapping("/id-gen")
+		public Long itemIdGenerator() {
+			return lostFoundItemDao.generateId();
+		}
+	  @GetMapping("/not-found")
+		public List<LostFoundItem> LostItemList() {
+			
+			return lostFoundItemDao.notFoundItemList();
+		}
+	 
+	  @GetMapping("/found")
+		public List<LostFoundItem> foundItemList() {
+			// TODO Auto-generated method stub
+			return lostFoundItemDao.foundItemList();
+		}
+	 
+	 
+
+
+
+
+}
+
+
