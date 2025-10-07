@@ -16,3 +16,7 @@ export const getUserDetails = () =>{
 export const getAllStudents = () =>{
   return axios.get(STUD_URL);
 }
+
+export const deleteStudent = (username) => {
+  return axios.delete(`${STUD_URL}/${username}`);
+}

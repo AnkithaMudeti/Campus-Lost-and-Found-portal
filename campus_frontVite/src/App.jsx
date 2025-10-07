@@ -3,9 +3,10 @@ import LoginPage from "./Components/LoginComponent/LoginPage";
 import AdminMenu from "./Components/LoginComponent/AdminMenu";
 import StudentMenu from "./Components/LoginComponent/StudentMenu";
 import SignUpPage from "./Components/LoginComponent/SignUpPage";
-import SingleStudentDetails from "./Components/LoginComponent/SingleStudentDetails";
+import DeleteStudent from "./Components/LoginComponent/DeleteStudent";
 import LostItemSubmit from "./Components/ItemComponent/LostItemSubmit";
 import LostItemReport from "./Components/ItemComponent/LostItemReport";
+import AdminLostItemReport from "./Components/ItemComponent/AdminLostItemReport";
 import FoundItemSubmit from "./Components/ItemComponent/FoundItemSubmit";
 import FoundItemRedirected from "./Components/ItemComponent/FoundItemRedirected";
 import FoundItemReport from "./Components/ItemComponent/FoundItemReport";
@@ -27,12 +28,13 @@ function App() {
           <Route path="/StudentMenu" element={<StudentMenu />} />
 
           {/* Student Details */}
-          <Route path="/SingleStudentDetail" element={<SingleStudentDetails />} />
+          <Route path="/DeleteStudent" element={<DeleteStudent />} />
           <Route path="/Students" element={<StudentList />} />
 
           {/* Lost Item Routes */}
           <Route path="/LostSubmit" element={<LostItemSubmit />} />
           <Route path="/LostReport" element={<LostItemReport />} />
+          <Route path="/AdminLostReport" element={<AdminLostItemReport />} />
 
           {/* Found Item Routes */}
           <Route path="/FoundSubmit" element={<FoundItemSubmit />} />

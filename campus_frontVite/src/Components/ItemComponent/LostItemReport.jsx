@@ -36,7 +36,6 @@ const LostItemReport = () => {
   }, [currentUser]);
 
   const handleFoundSubmission = (itemId) => {
-    // Navigate to redirected found item component
     navigate(`/Found-Redirected/${itemId}`);
   };
 
@@ -102,12 +101,14 @@ const LostItemReport = () => {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{item.lostDate}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{item.username}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      <button
-                        onClick={() => handleFoundSubmission(item.itemId)}
-                        className="bg-green-500 text-white font-bold py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition"
-                      >
-                        Mark as Found
-                      </button>
+                      {currentUser?.role === "Student" && (
+                        <button
+                          onClick={() => handleFoundSubmission(item.itemId)}
+                          className="bg-green-500 text-white font-bold py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition"
+                        >
+                          Mark as Found
+                        </button>
+                      )}
                     </td>
                   </tr>
                 ))}
