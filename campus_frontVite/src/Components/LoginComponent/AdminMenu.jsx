@@ -52,7 +52,7 @@ const AdminMenu = () => {
             {openDropdown === "lostItems" && (
               <div className="absolute top-full left-0 mt-1 w-64 bg-white rounded shadow-lg z-50 border border-gray-200">
                 <div className="py-2">
-                  <Link to="/AdminLostReport" className="block px-4 py-2 hover:bg-gray-100">
+                  <Link to="/LostReport" className="block px-4 py-2 hover:bg-gray-100">
                     Lost Item List
                   </Link>
                   <Link to=" " className="block px-4 py-2 hover:bg-gray-100">
@@ -96,7 +96,7 @@ const AdminMenu = () => {
                   <Link to="/FoundReport" className="block px-4 py-2 hover:bg-gray-100">
                     Found Item Report
                   </Link>
-                  <Link to="/AdminLostReport" className="block px-4 py-2 hover:bg-gray-100">
+                  <Link to="/LostReport" className="block px-4 py-2 hover:bg-gray-100">
                     Lost Item Report
                   </Link>
                   <Link to="/Analysis" className="block px-4 py-2 hover:bg-gray-100">

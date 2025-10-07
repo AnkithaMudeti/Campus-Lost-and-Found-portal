@@ -6,7 +6,6 @@ import SignUpPage from "./Components/LoginComponent/SignUpPage";
 import DeleteStudent from "./Components/LoginComponent/DeleteStudent";
 import LostItemSubmit from "./Components/ItemComponent/LostItemSubmit";
 import LostItemReport from "./Components/ItemComponent/LostItemReport";
-import AdminLostItemReport from "./Components/ItemComponent/AdminLostItemReport";
 import FoundItemSubmit from "./Components/ItemComponent/FoundItemSubmit";
 import FoundItemRedirected from "./Components/ItemComponent/FoundItemRedirected";
 import FoundItemReport from "./Components/ItemComponent/FoundItemReport";
@@ -34,7 +33,6 @@ function App() {
           {/* Lost Item Routes */}
           <Route path="/LostSubmit" element={<LostItemSubmit />} />
           <Route path="/LostReport" element={<LostItemReport />} />
-          <Route path="/AdminLostReport" element={<AdminLostItemReport />} />
 
           {/* Found Item Routes */}
           <Route path="/FoundSubmit" element={<FoundItemSubmit />} />
