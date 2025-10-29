@@ -1,14 +1,27 @@
 package edu.infosys.lostAndFoundApplication.dao;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
-import java.util.List;
+
 import edu.infosys.lostAndFoundApplication.bean.FoundItem;
+import edu.infosys.lostAndFoundApplication.bean.LostItem;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.Repository;
+import org.springframework.data.repository.query.Param;
 
-@Repository
-public interface FuzzyLogicRepository extends JpaRepository<FoundItem,String> {
+import java.util.List;
 
-    
-	 @Query("SELECT f FROM FoundItem f WHERE f.username <> ?1")
-	    List<FoundItem> findFoundItemsExcludingUser(String username);
+@org.springframework.stereotype.Repository
+
+public interface FuzzyLogicRepository extends Repository<FoundItem, String> {
+
+    @Query("SELECT f FROM FoundItem f WHERE f.username <> :username AND f.category = :category")
+    List<FoundItem> findPotentialFoundMatches(@Param("username") String username, @Param("category") String category);
+
+    @Query("SELECT l FROM LostItem l WHERE l.username <> :username AND l.category = :category")
+    List<LostItem> findPotentialLostMatches(@Param("username") String username,
+    @Param("category") String category);
+
+    @Query("SELECT f FROM FoundItem f WHERE f.username <> :username")
+    List<FoundItem> findAllFoundExcludingUser(@Param("username") String username);
+
+    @Query("SELECT l FROM LostItem l WHERE l.username <> :username")
+    List<LostItem> findAllLostExcludingUser(@Param("username") String username);
 }

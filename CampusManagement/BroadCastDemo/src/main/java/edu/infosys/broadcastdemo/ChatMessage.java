@@ -1,4 +1,4 @@
-package edu.infosys.lostAndFoundApplication.bean;
+package edu.infosys.broadcastdemo;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
