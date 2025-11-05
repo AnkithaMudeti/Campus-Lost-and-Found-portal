@@ -12,14 +12,22 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws") // Frontend connects to this
-                .setAllowedOriginPatterns("*")
-                .withSockJS();
+        // The /ws endpoint is what React will connect to for the WebSocket handshake
+        registry.addEndpoint("/ws")
+                .setAllowedOrigins("http://localhost:3939") // Allow your React app
+                .withSockJS(); // Use SockJS for fallback compatibility
     }
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        registry.enableSimpleBroker("/topic"); // For broadcasting messages
-        registry.setApplicationDestinationPrefixes("/app"); // Prefix for messages sent from client
+        // /app is the prefix for messages from clients to the server (to @MessageMapping)
+        registry.setApplicationDestinationPrefixes("/app");
+        
+        // /topic is for broadcast (one-to-many)
+        // /user is for private (one-to-one) messages
+        registry.enableSimpleBroker("/topic", "/user");
+
+        // Configures the prefix for user-specific destinations
+        registry.setUserDestinationPrefix("/user");
     }
 }

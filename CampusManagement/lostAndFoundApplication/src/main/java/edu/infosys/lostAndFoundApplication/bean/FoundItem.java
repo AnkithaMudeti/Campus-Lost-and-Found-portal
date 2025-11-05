@@ -17,16 +17,18 @@ public class FoundItem {
     private String brand;
     private String location;
     private String foundDate;
-    private Boolean status;
 
     @Column(length = 512)
     private String imageUrl;
 
+    private boolean status; // Added status field
+
     public FoundItem() {
         super();
+        this.status = false; // Default status to false (unclaimed)
     }
 
-    public FoundItem(String foundItemId, String username, String userEmail, String itemName, String category, String color, String brand, String location, String foundDate, String imageUrl,Boolean status) {
+    public FoundItem(String foundItemId, String username, String userEmail, String itemName, String category, String color, String brand, String location, String foundDate, String imageUrl, boolean status) {
         this.foundItemId = foundItemId;
         this.username = username;
         this.userEmail = userEmail;
@@ -37,10 +39,10 @@ public class FoundItem {
         this.location = location;
         this.foundDate = foundDate;
         this.imageUrl = imageUrl;
-        this.status=false;
+        this.status = status; // Initialize status
     }
 
-    
+    // Getters and Setters
     public String getFoundItemId() { return foundItemId; }
     public void setFoundItemId(String foundItemId) { this.foundItemId = foundItemId; }
     public String getUsername() { return username; }
@@ -62,13 +64,7 @@ public class FoundItem {
     public String getImageUrl() { return imageUrl; }
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 
-	public Boolean getStatus() {
-		return status;
-	}
-
-	public void setStatus(Boolean status) {
-		this.status = status;
-	}
-
-
+    // Getter and Setter for status
+    public boolean isStatus() { return status; }
+    public void setStatus(boolean status) { this.status = status; }
 }

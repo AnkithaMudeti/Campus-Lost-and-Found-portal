@@ -1,21 +1,25 @@
 import axios from "axios";
 
-// Backend base URL
-const BASE_URL = "http://localhost:9999/lost-found/login";
+const BASE_URL = "http://localhost:9999/lost-found";
 
-// Register a new user
-export const registerNewUser = (user) => axios.post(BASE_URL, user);
+export const registerNewUser = (user) => axios.post(`${BASE_URL}/register`, user);
 
-// Validate login credentials
-export const validateUser = (userId, password) =>
-  axios.get(`${BASE_URL}/${userId}/${password}`);
+export const validateUser = (userId, password) => {
+  const params = new URLSearchParams();
+  params.append('username', userId);
+  params.append('password', password);
+  return axios.post(`${BASE_URL}/login`, params, {
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  });
+};
 
-// Get current user details
-export const getUserDetails = () => axios.get(BASE_URL);
+export const getUserDetails = () => axios.get(`${BASE_URL}/user/details`);
 
-// Get all students
-export const getAllStudents = () => axios.get(`${BASE_URL}/students`);
+export const getAllStudents = () => axios.get(`${BASE_URL}/admin/students`);
 
-// Delete student by username
 export const deleteStudentByUsername = (username) =>
-  axios.delete(`${BASE_URL}/student/${username}`);
+  axios.delete(`${BASE_URL}/admin/student/${username}`);
+
+export const logoutUser = () => axios.post(`${BASE_URL}/logout`);

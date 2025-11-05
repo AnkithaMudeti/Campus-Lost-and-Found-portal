@@ -46,4 +46,3 @@ public class FuzzyLogicController {
         return fuzzyLogic.searchLostItems(query, username, threshold);
     }
 }
-

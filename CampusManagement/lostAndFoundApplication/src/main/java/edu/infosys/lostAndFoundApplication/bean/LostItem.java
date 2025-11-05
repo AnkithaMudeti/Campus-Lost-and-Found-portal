@@ -17,16 +17,18 @@ public class LostItem {
     private String brand;
     private String location;
     private String lostDate;
-    private Boolean status;
 
     @Column(length = 512)
     private String imageUrl;
 
+    private boolean status; // Added status field
+
     public LostItem() {
         super();
+        this.status = false; // Default status to false (not found)
     }
 
-    public LostItem(String lostItemId, String username, String userEmail, String itemName, String category, String color, String brand, String location, String lostDate, String imageUrl,Boolean status) {
+    public LostItem(String lostItemId, String username, String userEmail, String itemName, String category, String color, String brand, String location, String lostDate, String imageUrl, boolean status) {
         this.lostItemId = lostItemId;
         this.username = username;
         this.userEmail = userEmail;
@@ -37,7 +39,7 @@ public class LostItem {
         this.location = location;
         this.lostDate = lostDate;
         this.imageUrl = imageUrl;
-        this.status=false;
+        this.status = status; // Initialize status
     }
 
     // Getters and Setters
@@ -61,14 +63,8 @@ public class LostItem {
     public void setLostDate(String lostDate) { this.lostDate = lostDate; }
     public String getImageUrl() { return imageUrl; }
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
-
-	public Boolean getStatus() {
-		return status;
-	}
-
-	public void setStatus(Boolean status) {
-		this.status = status;
-	}
-
-
+    
+    // Getter and Setter for status
+    public boolean isStatus() { return status; }
+    public void setStatus(boolean status) { this.status = status; }
 }
