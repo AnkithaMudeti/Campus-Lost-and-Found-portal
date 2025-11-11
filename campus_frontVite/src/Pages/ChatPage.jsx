@@ -1,5 +1,5 @@
-import React, { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useContext, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useWebSocket } from "../Context/WebSocketContext";
 import { ThemeContext } from "../Context/ThemeContext";
 import {
@@ -13,39 +13,39 @@ import {
   Edit2,
   Check,
 } from "lucide-react";
-import ReturnButton from "./Buttons/ReturnButton";
-import ReturnHome from "./Buttons/ReturnHome";
+import ReturnHome from "../Components/Buttons/ReturnHome";
 
 // Theme toggle button
-const ThemeToggleButton = () => {
-  const { theme, toggleTheme } = useContext(ThemeContext);
-  return (
-    <button
-      onClick={toggleTheme}
-      style={{ cursor: "pointer" }}
-      className={`p-2 rounded-full ${
-        theme === "light"
-          ? "bg-gray-200 text-gray-800 hover:bg-gray-300"
-          : "bg-gray-700 text-white hover:bg-gray-600"
-      }`}
-    >
-      {theme === "light" ? <Moon size={20} /> : <Sun size={20} />}
-    </button>
-  );
-};
+// const ThemeToggleButton = () => {
+//   const { theme, toggleTheme } = useContext(ThemeContext);
+//   return (
+//     <button
+//       onClick={toggleTheme}
+//       style={{ cursor: "pointer" }}
+//       className={`p-2 rounded-full ${
+//         theme === "light"
+//           ? "bg-gray-200 text-gray-800 hover:bg-gray-300"
+//           : "bg-gray-700 text-white hover:bg-gray-600"
+//       }`}
+//     >
+//       {theme === "light" ? <Moon size={20} /> : <Sun size={20} />}
+//     </button>
+//   );
+// };
 
 const ChatPage = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const {
     isConnected,
     globalMessages,
     privateMessages,
     currentUser,
+    activeUserCount,
     sendGlobalMessage,
     sendPrivateMessage,
   } = useWebSocket();
 
   const { theme } = useContext(ThemeContext);
-  const navigate = useNavigate();
 
   const [globalInput, setGlobalInput] = useState("");
   const [privateInput, setPrivateInput] = useState("");
@@ -56,6 +56,23 @@ const ChatPage = () => {
   // --- NEW: Temporary display name (alias) ---
   const [displayName, setDisplayName] = useState(currentUser?.username || "");
   const [isEditingName, setIsEditingName] = useState(false);
+
+  // Update displayName when currentUser changes
+  useEffect(() => {
+    if (currentUser?.username) {
+      setDisplayName(currentUser.username);
+    }
+  }, [currentUser?.username]);
+
+  // Check for user parameter in URL to auto-start private chat
+  useEffect(() => {
+    const userParam = searchParams.get("user");
+    if (userParam && userParam !== activeChatUser) {
+      setActiveChatUser(userParam);
+      // Clear the URL parameter after setting it
+      setSearchParams({});
+    }
+  }, [searchParams, activeChatUser, setSearchParams]);
 
   // --- NEW: Flair system ---
   const flairs = {
@@ -277,6 +294,18 @@ const ChatPage = () => {
               <h2 className="text-2xl font-bold">
                 {activeChatUser ? `Chat with ${activeChatUser}` : "Global Chat"}
               </h2>
+              {!activeChatUser && (
+                <span
+                  className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                    theme === "light"
+                      ? "bg-blue-100 text-blue-800"
+                      : "bg-blue-900 text-blue-200"
+                  }`}
+                >
+                  👥 {activeUserCount}{" "}
+                  {activeUserCount === 1 ? "user" : "users"} online
+                </span>
+              )}
             </div>
           </div>
           <div className="flex items-center gap-4">
@@ -289,7 +318,7 @@ const ChatPage = () => {
             >
               {isConnected ? "Connected" : "Disconnected"}
             </span>
-            <ThemeToggleButton />
+            {/* <ThemeToggleButton /> */}
           </div>
         </div>
 
@@ -299,6 +328,35 @@ const ChatPage = () => {
         >
           {(activeChatUser ? activeChatMessages : globalMessages).map(
             (msg, index) => {
+              // Handle JOIN/LEAVE messages differently
+              if (msg.type === "JOIN" || msg.type === "LEAVE") {
+                // Skip displaying System messages that are just count updates
+                if (
+                  msg.sender === "System" &&
+                  msg.content?.startsWith("Online users:")
+                ) {
+                  return null; // Don't render System count messages, just update the count
+                }
+
+                return (
+                  <div key={index} className="flex justify-center my-2">
+                    <div
+                      className={`px-4 py-1 rounded-full text-sm font-medium ${
+                        msg.type === "JOIN"
+                          ? " text-green-800  dark:text-green-400"
+                          : " text-red-800  dark:text-red-400"
+                      }`}
+                    >
+                      {msg.type === "JOIN" ? "" : ""}
+                      {msg.content ||
+                        `${msg.sender} ${
+                          msg.type === "JOIN" ? "joined" : "left"
+                        } the chat`}
+                    </div>
+                  </div>
+                );
+              }
+
               // --- NEW: Parse message to get alias, text, and flair ---
               const { alias, text, flair } = parseMessage(
                 msg.content,
@@ -335,7 +393,7 @@ const ChatPage = () => {
                           {flair.label}
                         </span>
                       </p>
-                      <p className="text-xs text-gray-400">
+                      <p className="text-xs text-white">
                         {new Date().toLocaleTimeString()}
                       </p>
                     </div>
